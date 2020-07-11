@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class AbilityResolver : MonoBehaviour
 {
@@ -43,12 +43,16 @@ public class AbilityResolver : MonoBehaviour
 
         possibleTargets = GetPossibleTargets(ability);
 
+        Checkbox.SetActive(true);
+        Checkbox.GetComponent<Button>().interactable = false;
+
         foreach (GameObject t in possibleTargets){
+            Debug.Log(t.GetInstanceID());
             targettableEvent.AddListener(t.GetComponent<Unit>().SelectableEventHandler);
         }
         targettableEvent.Invoke(ability.abilityTargetingType);
 
-        Checkbox.SetActive(true);
+
     }
 
     public void Resolve(Ability ability) {
@@ -56,7 +60,6 @@ public class AbilityResolver : MonoBehaviour
         //on CheckBox
         foreach (GameObject t in possibleTargets)
         {
-            Debug.Log(t.GetInstanceID());
             if(t.GetComponent<Unit>().isSelected)
                 targets.Add(t);
         }
@@ -73,7 +76,7 @@ public class AbilityResolver : MonoBehaviour
     }
 
     private List<GameObject> GetPossibleTargets(Ability ability) {
-
+        Debug.Log(ability.abilityTargetingTeam.ToString());
         if(ability.abilityTargetingTeam == Team.Enemy) {
             return GameManager.Instance.enemyUnits;
         }
@@ -96,15 +99,19 @@ public class AbilityResolver : MonoBehaviour
     }
 
     public void OnUnitSelectHandler(GameObject obj) {
-        if(selectedUnit == null)
-            selectedUnit = obj;
-        else {
-            foreach (GameObject target in possibleTargets)
-            {
-                if(target != obj)
-                    target.GetComponent<Unit>().Deselect();
+        Debug.Log("attach");
+        Checkbox.GetComponent<Button>().interactable = true;
+        if(ability.abilityTargetingType == AbilityTargetingType.Individual) {
+            if(selectedUnit == null)
+                selectedUnit = obj;
+            else {
+                foreach (GameObject target in possibleTargets)
+                {
+                    if(target != obj)
+                        target.GetComponent<Unit>().Deselect();
+                }
+                selectedUnit = obj;
             }
-            selectedUnit = obj;
         }
     }
 }
