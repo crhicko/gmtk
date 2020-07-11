@@ -18,6 +18,8 @@ public class Menu : MonoBehaviour
 
     private GameObject activeMenu;
 
+    public GameObject controlCount;
+
     public int control = 10;
     // Start is called before the first frame update
     void Start()
@@ -136,6 +138,7 @@ public class Menu : MonoBehaviour
     {
         Debug.Log("LOSING CONTROL");
         control--;
+        controlCount.SendMessage("changeCount", control);
         if(control <= 0)
         {
             Debug.Log("OUT OF CONTROL");
