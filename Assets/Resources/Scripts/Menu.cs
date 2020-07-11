@@ -22,14 +22,15 @@ public class Menu : MonoBehaviour
 
     public int control = 10;
     // Start is called before the first frame update
-    private void OnEnable() {
+
+
+    void OnEnable()
+    {
         activeMenu = mainMenu;
         mainMenu.SetActive(true);
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(mainFirstButton);
-
     }
-
     void Start()
     {
         allMenus.Add(mainMenu);
