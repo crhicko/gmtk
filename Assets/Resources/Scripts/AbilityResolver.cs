@@ -68,7 +68,6 @@ public class AbilityResolver : MonoBehaviour
         targettableEvent.RemoveAllListeners();
         isApproved = false;
 
-
     }
 
     private List<GameObject> GetPossibleTargets(Ability ability) {

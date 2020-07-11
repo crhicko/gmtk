@@ -31,9 +31,11 @@ public class Unit : MonoBehaviour
     void Update()
     {
         Debug.Log(isSelected);
-        if(GameManager.Instance.gameState == GameState.PlayerTurnMenu && isTargettable) {
+        if(GameManager.Instance.gameState == GameState.PlayerTurnTargeting && isTargettable) {
             if(Input.GetMouseButtonDown(0)){
-                isSelected = true;
+                RaycastHit2D hitInfo = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
+                if(hitInfo.collider != null && hitInfo.collider.gameObject == gameObject)
+                    isSelected = true;
             }
         }
 
@@ -60,7 +62,7 @@ public class Unit : MonoBehaviour
 
         if(inTargettingMode == true) {
             if(abilityTargetingType == AbilityTargetingType.Individual) {
-                isTargettable = !isTargettable;
+                isTargettable = true;
                 isSelected = false;
             }
             else if(abilityTargetingType == AbilityTargetingType.Group) {
@@ -72,4 +74,5 @@ public class Unit : MonoBehaviour
             isSelected = false;
         }
     }
+
 }
