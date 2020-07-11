@@ -11,8 +11,8 @@ public class Unit : MonoBehaviour
     public string _name;
     public Team team;
     public int speed;
-
     public int controlCount;
+    private int armor = 0;
 
     [System.Serializable]
     public class SelectedEvent : UnityEvent<GameObject> {}
@@ -74,6 +74,20 @@ public class Unit : MonoBehaviour
 
     private void OnDestroy() {
         Debug.Log("I DIE");
+    }
+
+    public void OnNewTurn() {
+
+    }
+
+    public int GetArmor() {
+        return armor;
+    }
+    public void SetArmor(int amount) {
+        armor = amount;
+    }
+    public void AddArmor(int amount) {
+        armor += amount;
     }
 
     public void SelectableEventHandler(AbilityTargetingType abilityTargetingType) {
