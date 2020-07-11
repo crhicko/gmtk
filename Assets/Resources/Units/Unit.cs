@@ -34,7 +34,7 @@ public class Unit : MonoBehaviour
         }
 
         if(isSelected) {
-            Debug.Log("This unit " + gameObject.name + " has been selected");
+           
         }
 
     }
