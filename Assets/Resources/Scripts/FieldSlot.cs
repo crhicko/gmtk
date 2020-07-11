@@ -2,16 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Unit", menuName = "Unit", order = 0)]
-public class Unit : ScriptableObject
+public class FieldSlot : MonoBehaviour
 {
-    public int maxhp;
-    public int hp;
-    public string _name;
 
-    public int controlCount;
-
-
+    public Team team;
     // Start is called before the first frame update
     void Start()
     {
