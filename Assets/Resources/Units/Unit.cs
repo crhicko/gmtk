@@ -65,6 +65,13 @@ public class Unit : MonoBehaviour
         return hp;
     }
 
+    public int HealHP(int amount) {
+        hp += amount;
+        if(hp > maxhp)
+            hp = maxhp;
+        return hp;
+    }
+
     private void OnDestroy() {
         Debug.Log("I DIE");
     }
