@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEditor;
 
 
 
@@ -16,6 +17,8 @@ public class Menu : MonoBehaviour
     public List<GameObject> allMenus = new List<GameObject>();
 
     private GameObject activeMenu;
+
+    public int control = 10;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,21 +37,24 @@ public class Menu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(activeMenu);
+    
         if (Input.GetKeyDown(KeyCode.Escape))
         {
 
             if(activeMenu == skillMenu)
             {
                 openMainMenu();
+                removeControl();
             }
             else if(activeMenu == skillSwordMenu)
             {
                 openSkillMenu();
+                removeControl();
             }
             else if(activeMenu == skillDefensiveMenu)
             {
                 openSkillMenu();
+                removeControl();
             }
             else{}
             
@@ -125,6 +131,15 @@ public class Menu : MonoBehaviour
             skillDefensiveFirstButton = EventSystem.current.currentSelectedGameObject;
         }
         else{}
+    }
+    public void removeControl()
+    {
+        Debug.Log("LOSING CONTROL");
+        control--;
+        if(control <= 0)
+        {
+            Debug.Log("OUT OF CONTROL");
+        }
     }
     public void pass()
     {
