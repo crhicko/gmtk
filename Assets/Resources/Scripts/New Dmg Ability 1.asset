@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: New Dmg Ability 1
   m_EditorClassIdentifier: 
   abilityTargetingType: 0
-  abilityTargetingTeam: 0
+  abilityTargetingTeam: 1
   DMGAmount: 2
