@@ -18,6 +18,8 @@ public class AbilityResolver : MonoBehaviour
 
     public Ability ability;
 
+    private GameObject selectedUnit;
+
     bool isApproved = false;
     bool isAborted = false;
 
@@ -64,6 +66,10 @@ public class AbilityResolver : MonoBehaviour
             ability.invoke(target);
         }
 
+        targettableEvent.Invoke(ability.abilityTargetingType);
+        targettableEvent.RemoveAllListeners();
+        isApproved = false;
+
     }
 
     private List<GameObject> GetPossibleTargets(Ability ability) {
@@ -81,10 +87,25 @@ public class AbilityResolver : MonoBehaviour
         {
             yield return null;
         }
+
+        Checkbox.SetActive(false);
     }
 
     public void ClickHandler(){
         isApproved = true;
+    }
+
+    public void OnUnitSelectHandler(GameObject obj) {
+        if(selectedUnit == null)
+            selectedUnit = obj;
+        else {
+            foreach (GameObject target in possibleTargets)
+            {
+                if(target != obj)
+                    target.GetComponent<Unit>().Deselect();
+            }
+            selectedUnit = obj;
+        }
     }
 }
 
