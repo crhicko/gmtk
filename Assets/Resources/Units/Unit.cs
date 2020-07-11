@@ -13,16 +13,29 @@ public class Unit : MonoBehaviour
 
     public int controlCount;
 
+    private Collider2D cldr;
+
+    public bool isTargettable = false;
+    public bool isSelected = false;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        cldr = gameObject.GetComponent<Collider2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(GameManager.Instance.gameState == GameState.PlayerTurnMenu && isTargettable) {
+            if(Input.GetMouseButtonDown(0)){
+                isSelected = true;
+            }
+        }
+
+        if(isSelected) {
+            Debug.Log("This unit " + gameObject.name + " has been selected");
+        }
 
     }
 
@@ -35,5 +48,15 @@ public class Unit : MonoBehaviour
 
     private void OnDestroy() {
         Debug.Log("I DIE");
+    }
+
+    public void SelectableEventHandler(AbilityTargetingType abilityTargetingType) {
+        if(abilityTargetingType == AbilityTargetingType.Individual) {
+            isTargettable = !isTargettable;
+            isSelected = false;
+        }
+        else if(abilityTargetingType == AbilityTargetingType.Group) {
+            isSelected = true;
+        }
     }
 }
