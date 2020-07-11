@@ -18,6 +18,8 @@ public class AbilityResolver : MonoBehaviour
 
     public Ability ability;
 
+    private GameObject selectedUnit;
+
     bool isApproved = false;
     bool isAborted = false;
 
@@ -91,6 +93,19 @@ public class AbilityResolver : MonoBehaviour
 
     public void ClickHandler(){
         isApproved = true;
+    }
+
+    public void OnUnitSelectHandler(GameObject obj) {
+        if(selectedUnit == null)
+            selectedUnit = obj;
+        else {
+            foreach (GameObject target in possibleTargets)
+            {
+                if(target != obj)
+                    target.GetComponent<Unit>().Deselect();
+            }
+            selectedUnit = obj;
+        }
     }
 }
 

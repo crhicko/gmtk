@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 public class Unit : MonoBehaviour
@@ -12,6 +13,11 @@ public class Unit : MonoBehaviour
     public int speed;
 
     public int controlCount;
+
+    [System.Serializable]
+    public class SelectedEvent : UnityEvent<GameObject> {}
+    public SelectedEvent selectedEvent;
+    public AbilityResolver abilityResolver;
 
     private Collider2D cldr;
 
@@ -25,17 +31,20 @@ public class Unit : MonoBehaviour
     {
         cldr = gameObject.GetComponent<Collider2D>();
         isSelected = false;
+        abilityResolver = GameManager.Instance.GetComponent<AbilityResolver>();
+        selectedEvent.AddListener(abilityResolver.OnUnitSelectHandler);
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(isSelected);
         if(GameManager.Instance.gameState == GameState.PlayerTurnTargeting && isTargettable) {
             if(Input.GetMouseButtonDown(0)){
                 RaycastHit2D hitInfo = Physics2D.GetRayIntersection(Camera.main.ScreenPointToRay(Input.mousePosition));
-                if(hitInfo.collider != null && hitInfo.collider.gameObject == gameObject)
+                if(hitInfo.collider != null && hitInfo.collider.gameObject == gameObject) {
                     isSelected = true;
+                    selectedEvent.Invoke(gameObject);
+                }
             }
         }
 
@@ -43,6 +52,10 @@ public class Unit : MonoBehaviour
             Debug.Log("This unit " + gameObject.name + " has been selected");
         }
 
+    }
+
+    public void Deselect(){
+        isSelected = false;
     }
 
     public int TakeDamage(int damage) {
@@ -61,6 +74,7 @@ public class Unit : MonoBehaviour
         inTargettingMode = !inTargettingMode;
 
         if(inTargettingMode == true) {
+
             if(abilityTargetingType == AbilityTargetingType.Individual) {
                 isTargettable = true;
                 isSelected = false;
