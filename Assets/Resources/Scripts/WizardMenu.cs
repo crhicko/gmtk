@@ -15,7 +15,12 @@ public class WizardMenu : MonoBehaviour
 
     public List<GameObject> allMenus = new List<GameObject>();
 
+
     private GameObject activeMenu;
+
+    public GameObject controlCount;
+
+    public int control = 10;
     // Start is called before the first frame update
     void Start()
     {
@@ -41,53 +46,62 @@ public class WizardMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(activeMenu);
         if (Input.GetKeyDown(KeyCode.Escape))
         {
 
             if(activeMenu == skillMenu)
             {
                 openMainMenu();
+                removeControl();
 
             }
             else if(activeMenu == skillFireMenu)
             {
                 openSkillMenu();
+                removeControl();
  
             }
             else if(activeMenu == skillFire2Menu)
             {
                 openSkillFireMenu();
+                removeControl();
             }
             else if(activeMenu == skillFire3Menu)
             {
                 openSkillFire2Menu();
+                removeControl();
             }
             else if(activeMenu == skillAirMenu)
             {
                 openSkillMenu();
+                removeControl();
  
             }
             else if(activeMenu == skillAir2Menu)
             {
                 openSkillAirMenu();
+                removeControl();
             }
             else if(activeMenu == skillAir3Menu)
             {
                 openSkillAir2Menu();
+                removeControl();
             }
             else if(activeMenu == skillEarthMenu)
             {
                 openSkillMenu();
+                removeControl();
  
             }
             else if(activeMenu == skillEarth2Menu)
             {
                 openSkillEarthMenu();
+                removeControl();
             }
             else if(activeMenu == skillEarth3Menu)
             {
                 openSkillEarth2Menu();
+                removeControl();
             }
 
             else{}
@@ -269,6 +283,17 @@ public class WizardMenu : MonoBehaviour
         }
 
         else{}
+    }
+
+    public void removeControl()
+    {
+        Debug.Log("LOSING CONTROL");
+        control--;
+        controlCount.SendMessage("changeCount", control);
+        if(control <= 0)
+        {
+            Debug.Log("OUT OF CONTROL");
+        }
     }
     public void pass()
     {
