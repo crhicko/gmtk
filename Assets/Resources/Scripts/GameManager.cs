@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+
+
 public enum GameState{
     End,
     PlayerTurnMenu,
     PlayerTurnTargeting,
     Resolving,
-    EnemyTurn
+    EnemyTurn,
+    EndOfTurn
 }
 
 public class GameManager : MonoBehaviour
@@ -23,14 +26,17 @@ public class GameManager : MonoBehaviour
 
     public List<GameObject> turnOrder;
 
-    public GameObject testUnit;
-
     private static GameManager _instance;
     public static GameManager Instance { get {
         return _instance;
     }}
 
     public GameState gameState;
+    public GameObject activeTurnUnit;
+
+    public GameObject menuWarrior;
+    public GameObject menuWizard;
+    public GameObject menuHealer;
 
     //Starts disabled, begins working on enabled
     private AbilityResolver abilityResolver;
@@ -52,14 +58,19 @@ public class GameManager : MonoBehaviour
 
         List<GameObject> tempUnitList = new List<GameObject>();
 
+        //Disable all menus
+        menuWarrior.SetActive(false);
+        menuWizard.SetActive(false);
+        menuHealer.SetActive(false);
+
         //create the characters on the field in the desired slots
         foreach(GameObject unit in playerUnits) {
             List<FieldSlot> emptySlots = GetEmptySlots(playerSlots);
             if(emptySlots.Count == 0)
                 continue;
-            GameObject obj = Instantiate(testUnit, transform.position, Quaternion.identity);
+            GameObject obj = Instantiate(unit, transform.position, Quaternion.identity);
             obj.transform.parent = emptySlots[0].transform;
-            obj.transform.localPosition = Vector3.zero;
+            obj.transform.localPosition = new Vector3(0, 0.1f, -1);
             tempUnitList.Add(obj);
         }
         playerUnits.Clear();
@@ -70,7 +81,7 @@ public class GameManager : MonoBehaviour
             List<FieldSlot> emptySlots = GetEmptySlots(enemySlots);
             if(emptySlots.Count == 0)
                 continue;
-            GameObject obj = Instantiate(testUnit, transform.position, Quaternion.identity);
+            GameObject obj = Instantiate(unit, transform.position, Quaternion.identity);
             obj.transform.parent = emptySlots[0].transform;
             obj.transform.localPosition = Vector3.zero;
             obj.GetComponent<Unit>().team = Team.Enemy;
@@ -92,10 +103,24 @@ public class GameManager : MonoBehaviour
         switch (gameState)
         {
             case GameState.PlayerTurnMenu:
+                turnOrder[0].GetComponent<Unit>().menu.SetActive(true);
+                Debug.Log("IT IS THE PLAYERS TURN");
                 break;
             case GameState.PlayerTurnTargeting:
                 break;
             case GameState.EnemyTurn:
+                Debug.Log("IT IS THE ENEMIES TURN");
+                gameState = GameState.EndOfTurn;
+                break;
+            case GameState.EndOfTurn:
+                Debug.Log("Ending Turn");
+                if(turnOrder[0].GetComponent<Unit>().team == Team.Player)
+                    turnOrder[0].GetComponent<Unit>().menu.SetActive(false);
+                CycleTurnOrder();
+                if(turnOrder[0].GetComponent<Unit>().team == Team.Player)
+                    gameState = GameState.PlayerTurnMenu;
+                else
+                    gameState = GameState.EnemyTurn;
                 break;
             case GameState.End:
                 break;
@@ -141,8 +166,29 @@ public class GameManager : MonoBehaviour
         List<GameObject> units = new List<GameObject>();
         units.AddRange(playerUnits);
         units.AddRange(enemyUnits);
-        units.OrderBy(u=>u.GetComponent<Unit>().speed).ToList();
+        units.Sort(SortBySpeed);
 
         return units;
+    }
+
+    private static int SortBySpeed(GameObject p1, GameObject p2) {
+        return p2.GetComponent<Unit>().speed.CompareTo(p1.GetComponent<Unit>().speed);
+    }
+
+    private List<GameObject> UpdateTurnOrder(List<GameObject> _turnOrder) {
+        _turnOrder.Sort(SortBySpeed);
+        return _turnOrder;
+    }
+
+    private void CycleTurnOrder() {
+        GameObject temp;
+        temp = turnOrder[0];
+        turnOrder.RemoveAt(0);
+        turnOrder.Add(temp);
+        activeTurnUnit.GetComponent<SpriteRenderer>().sprite = turnOrder[0].GetComponent<SpriteRenderer>().sprite;
+    }
+
+    public void EndTurn() {
+        gameState = GameState.EndOfTurn;
     }
 }

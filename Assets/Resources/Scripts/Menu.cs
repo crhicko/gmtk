@@ -22,6 +22,14 @@ public class Menu : MonoBehaviour
 
     public int control = 10;
     // Start is called before the first frame update
+    private void OnEnable() {
+        activeMenu = mainMenu;
+        mainMenu.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(mainFirstButton);
+
+    }
+
     void Start()
     {
         allMenus.Add(mainMenu);
@@ -33,13 +41,12 @@ public class Menu : MonoBehaviour
         mainMenu.SetActive(true);
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(mainFirstButton);
-
     }
 
     // Update is called once per frame
     void Update()
     {
-    
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
 
@@ -59,12 +66,12 @@ public class Menu : MonoBehaviour
                 removeControl();
             }
             else{}
-            
+
         }
     }
 
     public void openMainMenu()
-    {   
+    {
         setFirstButton();
         closeMenus();
         mainMenu.SetActive(true);
@@ -74,8 +81,8 @@ public class Menu : MonoBehaviour
 
     }
     public void openSkillMenu()
-    {   
-        
+    {
+
         setFirstButton();
         closeMenus();
         skillMenu.SetActive(true);
@@ -85,7 +92,7 @@ public class Menu : MonoBehaviour
 
     }
     public void openSkillSwordMenu()
-    {   
+    {
         setFirstButton();
         closeMenus();
         skillSwordMenu.SetActive(true);
@@ -95,7 +102,7 @@ public class Menu : MonoBehaviour
 
     }
     public void openSkillDefensiveMenu()
-    {   
+    {
         setFirstButton();
         closeMenus();
         skillDefensiveMenu.SetActive(true);
