@@ -12,6 +12,7 @@ public class Unit : MonoBehaviour
     public Team team;
     public int speed;
     public int controlCount;
+    [SerializeField]
     private int armor = 0;
 
     [System.Serializable]
@@ -91,7 +92,6 @@ public class Unit : MonoBehaviour
     }
 
     public void SelectableEventHandler(AbilityTargetingType abilityTargetingType) {
-        Debug.Log("Handling event");
         inTargettingMode = !inTargettingMode;
 
         if(inTargettingMode == true) {

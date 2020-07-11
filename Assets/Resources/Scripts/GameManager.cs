@@ -62,7 +62,8 @@ public class GameManager : MonoBehaviour
             obj.transform.localPosition = Vector3.zero;
             tempUnitList.Add(obj);
         }
-        playerUnits = tempUnitList;
+        playerUnits.Clear();
+        playerUnits = tempUnitList.GetRange(0,tempUnitList.Count);
         tempUnitList.Clear();
 
         foreach(GameObject unit in enemyUnits) {
@@ -75,7 +76,7 @@ public class GameManager : MonoBehaviour
             obj.GetComponent<Unit>().team = Team.Enemy;
             tempUnitList.Add(obj);
         }
-        enemyUnits = tempUnitList;
+        enemyUnits = tempUnitList.GetRange(0,tempUnitList.Count);
 
         turnOrder = CreateTurnOrder();
         if(turnOrder[0].GetComponent<Unit>().team == Team.Player)

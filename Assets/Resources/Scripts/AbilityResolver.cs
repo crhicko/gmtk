@@ -47,6 +47,7 @@ public class AbilityResolver : MonoBehaviour
         Checkbox.GetComponent<Button>().interactable = false;
 
         foreach (GameObject t in possibleTargets){
+            Debug.Log(t.GetInstanceID());
             targettableEvent.AddListener(t.GetComponent<Unit>().SelectableEventHandler);
         }
         targettableEvent.Invoke(ability.abilityTargetingType);
@@ -59,7 +60,6 @@ public class AbilityResolver : MonoBehaviour
         //on CheckBox
         foreach (GameObject t in possibleTargets)
         {
-            Debug.Log(t.GetInstanceID());
             if(t.GetComponent<Unit>().isSelected)
                 targets.Add(t);
         }
@@ -76,7 +76,7 @@ public class AbilityResolver : MonoBehaviour
     }
 
     private List<GameObject> GetPossibleTargets(Ability ability) {
-
+        Debug.Log(ability.abilityTargetingTeam.ToString());
         if(ability.abilityTargetingTeam == Team.Enemy) {
             return GameManager.Instance.enemyUnits;
         }
