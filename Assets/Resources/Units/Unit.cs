@@ -20,6 +20,8 @@ public class Unit : MonoBehaviour
     public SelectedEvent selectedEvent;
     public AbilityResolver abilityResolver;
 
+    public GameObject menu;
+
     private Collider2D cldr;
 
     public bool isTargettable = false;
@@ -34,6 +36,21 @@ public class Unit : MonoBehaviour
         isSelected = false;
         abilityResolver = GameManager.Instance.GetComponent<AbilityResolver>();
         selectedEvent.AddListener(abilityResolver.OnUnitSelectHandler);
+        Debug.Log(gameObject.name);
+        switch (gameObject.name)
+        {
+            case("PlayerSwordsman(Clone)"):
+                menu = GameManager.Instance.menuWarrior;
+                break;
+            case("PlayerWizard(Clone)"):
+                menu = GameManager.Instance.menuWizard;
+                break;
+            case("PlayerHealer(Clone)"):
+                menu = GameManager.Instance.menuWizard;
+                break;
+            default:
+                break;
+        }
     }
 
     // Update is called once per frame
@@ -109,5 +126,7 @@ public class Unit : MonoBehaviour
             isSelected = false;
         }
     }
+
+
 
 }

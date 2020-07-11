@@ -49,10 +49,16 @@ MonoBehaviour:
   hp: 20
   _name: SwordBlob
   team: 0
-  speed: 0
+  speed: 23
   controlCount: 3
+  armor: 0
+  selectedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  abilityResolver: {fileID: 0}
   isTargettable: 0
   isSelected: 1
+  inTargettingMode: 0
 --- !u!212 &9119247646324218341
 SpriteRenderer:
   m_ObjectHideFlags: 0
