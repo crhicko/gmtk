@@ -64,6 +64,11 @@ public class AbilityResolver : MonoBehaviour
             ability.invoke(target);
         }
 
+        targettableEvent.Invoke(ability.abilityTargetingType);
+        targettableEvent.RemoveAllListeners();
+        isApproved = false;
+
+
     }
 
     private List<GameObject> GetPossibleTargets(Ability ability) {
@@ -81,6 +86,8 @@ public class AbilityResolver : MonoBehaviour
         {
             yield return null;
         }
+
+        Checkbox.SetActive(false);
     }
 
     public void ClickHandler(){

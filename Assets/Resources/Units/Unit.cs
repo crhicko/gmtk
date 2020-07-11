@@ -18,15 +18,19 @@ public class Unit : MonoBehaviour
     public bool isTargettable = false;
     public bool isSelected = false;
 
+    public bool inTargettingMode = false;
+
     // Start is called before the first frame update
     void Start()
     {
         cldr = gameObject.GetComponent<Collider2D>();
+        isSelected = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(isSelected);
         if(GameManager.Instance.gameState == GameState.PlayerTurnMenu && isTargettable) {
             if(Input.GetMouseButtonDown(0)){
                 isSelected = true;
@@ -51,12 +55,21 @@ public class Unit : MonoBehaviour
     }
 
     public void SelectableEventHandler(AbilityTargetingType abilityTargetingType) {
-        if(abilityTargetingType == AbilityTargetingType.Individual) {
-            isTargettable = !isTargettable;
-            isSelected = false;
+        Debug.Log("Handling event");
+        inTargettingMode = !inTargettingMode;
+
+        if(inTargettingMode == true) {
+            if(abilityTargetingType == AbilityTargetingType.Individual) {
+                isTargettable = !isTargettable;
+                isSelected = false;
+            }
+            else if(abilityTargetingType == AbilityTargetingType.Group) {
+                isSelected = true;
+            }
         }
-        else if(abilityTargetingType == AbilityTargetingType.Group) {
-            isSelected = true;
+        else {
+            isTargettable = false;
+            isSelected = false;
         }
     }
 }
